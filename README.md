@@ -1,6 +1,7 @@
 # pod-babashka-lanterna
 
 WIP. Babashka pods need to implement sockets in addition to stdin/stdout, since clojure-lanterna writes to stdout as well.
+See https://github.com/babashka/babashka.pods/issues/2.
 
 ## Dev
 
