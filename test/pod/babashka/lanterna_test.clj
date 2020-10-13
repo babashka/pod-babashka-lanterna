@@ -5,7 +5,9 @@
 
 (pods/load-pod (if (= "native" (System/getenv "POD_TEST_ENV"))
                  "./pod-babashka-lanterna"
-                 ["lein" "run" "-m" "pod.babashka.lanterna"]))
+                 ["lein" "run" "-m" "pod.babashka.lanterna"])
+               {:socket true
+                :inherit-io true})
 
 (require '[pod.babashka.lanterna.terminal :as terminal])
 

@@ -1,4 +1,3 @@
 /target
-/pod-babashka-hsqldb
-/pod-babashka-postgresql
+/pod-babashka-lanterna
 /.cpcache

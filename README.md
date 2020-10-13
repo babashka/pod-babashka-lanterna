@@ -11,7 +11,7 @@ Run `script/compile`
 
 ### Test
 
-Run `script/test`.
+Run `script/test` or `bb lanterna.clj`.
 
 ## License
 
