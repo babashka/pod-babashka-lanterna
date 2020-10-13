@@ -1,12 +1,14 @@
 #?(:bb (require '[babashka.pods :refer [load-pod]]))
 
-;; test pod with JVM:
-#_(load-pod ["lein" "trampoline" "run" "-m" "pod.babashka.lanterna"]
-            {:socket true
-             :inherit-io true})
-
-#?(:bb (load-pod ["./pod-babashka-lanterna"] {:socket true
-                                              :inherit-io true}))
+#?(:bb
+   ;; test pod with JVM:
+   ;; (load-pod ["lein" "trampoline" "run" "-m" "pod.babashka.lanterna"]
+   ;;           {:socket true
+   ;;            :inherit-io true})
+   (load-pod ["./pod-babashka-lanterna"] {:socket true
+                                          :inherit-io true})
+   :clj nil
+   )
 
 #?(:bb (require '[pod.babashka.lanterna.terminal :as terminal])
    ;; with clj, we require normal lanterna, to compare
@@ -20,6 +22,4 @@
 (terminal/put-string terminal "Hello TUI Babashka!" 10 5)
 (terminal/flush terminal)
 
-;; TODO: why doesn't get-key-blocking work in the bb pod?
-#?(:bb (read-line)
-   :clj (terminal/get-key-blocking terminal))
+(terminal/get-key-blocking terminal)

@@ -101,7 +101,8 @@
                           {:name start}
                           {:name put-string}
                           {:name flush}
-                          {:name stop}]}]
+                          {:name stop}
+                          {:name get-key-blocking}]}]
      :opts {:shutdown {}}}))
 
 (debug describe-map)
