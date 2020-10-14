@@ -2,11 +2,11 @@
 
 #?(:bb
    ;; test pod with JVM:
-   ;; (load-pod ["lein" "trampoline" "run" "-m" "pod.babashka.lanterna"]
-   ;;           {:socket true
-   ;;            :inherit-io true})
-   (load-pod ["./pod-babashka-lanterna"] {:socket true
-                                          :inherit-io true})
+   (load-pod ["lein" "trampoline" "run" "-m" "pod.babashka.lanterna"]
+             {:socket true
+              :inherit-io true})
+   ;; (load-pod ["./pod-babashka-lanterna"] {:socket true
+   ;;                                        :inherit-io true})
    :clj nil
    )
 
@@ -14,11 +14,12 @@
    ;; with clj, we require normal lanterna, to compare
    :clj (require '[lanterna.terminal :as terminal]))
 
-#_:clj-kondo/ignore terminal/text-terminal
+#_:clj-kondo/ignore terminal/get-terminal
 
-(def terminal (terminal/text-terminal))
+(def terminal (terminal/get-terminal))
 
 (terminal/start terminal)
+
 (terminal/put-string terminal
                      (str "Hello TUI Babashka!")
                      10 5)

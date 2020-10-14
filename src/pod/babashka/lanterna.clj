@@ -33,23 +33,24 @@
 
 (def terminals (atom {}))
 
-(defn text-terminal
-  ([] (let [t (terminal/text-terminal)
-            id (str (java.util.UUID/randomUUID))]
-        (swap! terminals assoc id t)
-        {::terminal id}))
-  ([m]
-   (get @terminals (::terminal m))))
+(defn resolve-terminal [m]
+  (get @terminals (::terminal m)))
+
+(defn get-terminal []
+  (let [t (terminal/get-terminal)
+        id (str (java.util.UUID/randomUUID))]
+    (swap! terminals assoc id t)
+    {::terminal id}))
 
 (defmacro def-terminal-fn
   ([f]
    `(defn ~(symbol (name f)) [m# & args#]
-      (let [t# (text-terminal m#)]
+      (let [t# (resolve-terminal m#)]
         (let [v# (apply ~(symbol "terminal" (str f)) t# args#)]
           v#))))
   ([f ret]
    `(defn ~(symbol (name f)) [m# & args#]
-      (let [t# (text-terminal m#)]
+      (let [t# (resolve-terminal m#)]
         (apply ~(symbol "terminal" (str f)) t# args#)
         ~ret))))
 
@@ -63,7 +64,7 @@
 
 (def lookup*
   {'pod.babashka.lanterna.terminal
-   {'text-terminal    text-terminal
+   {'get-terminal     get-terminal
     'start            start
     'stop             stop
     'put-string       put-string
