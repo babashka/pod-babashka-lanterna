@@ -2,11 +2,11 @@
 
 #?(:bb
    ;; test pod with JVM:
-   ;; (load-pod ["lein" "trampoline" "run" "-m" "pod.babashka.lanterna"]
-   ;;           {:socket true
-   ;;            :inherit-io true})
-   (load-pod ["./pod-babashka-lanterna"] {:socket true
-                                          :inherit-io true})
+   (load-pod ["lein" "trampoline" "run" "-m" "pod.babashka.lanterna"]
+             {:socket true
+              :inherit-io true})
+   ;; (load-pod ["./pod-babashka-lanterna"] {:socket true
+   ;;                                        :inherit-io true})
    :clj nil
    )
 
@@ -19,7 +19,23 @@
 (def terminal (terminal/text-terminal))
 
 (terminal/start terminal)
-(terminal/put-string terminal "Hello TUI Babashka!" 10 5)
+(terminal/put-string terminal
+                     (str "Hello TUI Babashka!")
+                     10 5)
+(terminal/put-string terminal
+                     (str "The size of this terminal: "
+                          (terminal/get-size terminal))
+                     10 6)
+(terminal/put-string terminal
+                     "Press q to exit."
+                     10 7)
+
 (terminal/flush terminal)
 
-(terminal/get-key-blocking terminal)
+(def k (terminal/get-key-blocking terminal))
+
+(terminal/put-string terminal
+                     (str "You pressed: " k)
+                     10 8)
+
+(Thread/sleep 1000)

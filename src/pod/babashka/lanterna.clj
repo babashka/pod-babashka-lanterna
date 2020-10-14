@@ -1,4 +1,5 @@
 (ns pod.babashka.lanterna
+  {:clj-kondo/config '{:lint-as {pod.babashka.lanterna/def-terminal-fn clojure.core/def}}}
   (:refer-clojure :exclude [read read-string flush])
   (:require [bencode.core :as bencode]
             [clojure.edn :as edn]
@@ -40,42 +41,26 @@
   ([m]
    (get @terminals (::terminal m))))
 
-(defn start [m]
-  (debug :starting m)
-  (let [t (text-terminal m)]
-    (terminal/start t)
-    nil))
+(defmacro def-terminal-fn
+  ([f]
+   `(defn ~(symbol (name f)) [m# & args#]
+      (let [t# (text-terminal m#)]
+        (let [v# (apply ~(symbol "terminal" (str f)) t# args#)]
+          v#))))
+  ([f ret]
+   `(defn ~(symbol (name f)) [m# & args#]
+      (let [t# (text-terminal m#)]
+        (apply ~(symbol "terminal" (str f)) t# args#)
+        ~ret))))
 
-(defn stop [m]
-  (debug :stopping m)
-  (let [t (text-terminal m)]
-    (terminal/stop t)
-    {}))
+(def-terminal-fn start nil)
+(def-terminal-fn stop nil)
+(def-terminal-fn put-string nil)
+(def-terminal-fn flush nil)
+(def-terminal-fn get-key)
+(def-terminal-fn get-key-blocking)
+(def-terminal-fn get-size)
 
-(defn put-string [m & args]
-  (apply debug :put-string m args)
-  (let [t (text-terminal m)]
-    (apply terminal/put-string t args)
-    nil))
-
-(defn flush [m]
-  (debug :flush m)
-  (let [t (text-terminal m)]
-    (terminal/flush t)
-    nil))
-
-(defn get-key-blocking [m]
-  (let [t (text-terminal m)]
-    (terminal/get-key-blocking t)))
-
-;; (defmacro def-terminal-fn [f]
-;;   `(defn ~(symbol (name f)) [m# & args#]
-;;      (let [t# (text-terminal m#)]
-;;        (apply ~f t# args#))))
-
-;; (def-terminal-fn terminal/get-key-blocking)
-
-#_{:clj-kondo/ignore [:unresolved-symbol]}
 (def lookup*
   {'pod.babashka.lanterna.terminal
    {'text-terminal    text-terminal
@@ -83,7 +68,9 @@
     'stop             stop
     'put-string       put-string
     'flush            flush
-    'get-key-blocking get-key-blocking}})
+    'get-key          get-key
+    'get-key-blocking get-key-blocking
+    'get-size         get-size}})
 
 (defn lookup [var]
   (let [var-ns (symbol (namespace var))
@@ -97,12 +84,9 @@
          v))
    `{:format :edn
      :namespaces [{:name pod.babashka.lanterna.terminal
-                   :vars [{:name text-terminal}
-                          {:name start}
-                          {:name put-string}
-                          {:name flush}
-                          {:name stop}
-                          {:name get-key-blocking}]}]
+                   :vars ~(mapv (fn [[k _]]
+                                  {:name k})
+                              (get lookup* 'pod.babashka.lanterna.terminal))}]
      :opts {:shutdown {}}}))
 
 (debug describe-map)
@@ -174,4 +158,5 @@
                   (recur))))))))
     (catch Throwable e
       (binding [*out* *err*]
-        (prn e)))))
+        (prn e)
+        #_(spit "/tmp/exception.log" e)))))

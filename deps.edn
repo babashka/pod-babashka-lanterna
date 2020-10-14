@@ -1,4 +1,6 @@
-{:deps {babashka/clojure-lanterna {:mvn/version "0.9.8-SNAPSHOT"}
+{:deps {babashka/clojure-lanterna
+        #_{:local/root "/tmp/clojure-lanterna"}
+        {:mvn/version "0.9.8-SNAPSHOT"}
         nrepl/bencode {:mvn/version "1.1.0"}}
  :aliases
  {:test
