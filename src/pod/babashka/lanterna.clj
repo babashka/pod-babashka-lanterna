@@ -101,7 +101,14 @@
 
 (defn -main [& _args]
   (try
-    (let [server (ServerSocket. 1888)
+    (let [server (ServerSocket. 0)
+          port (.getLocalPort server)
+          pid (.pid (java.lang.ProcessHandle/current))
+          port-file (io/file (str ".babashka-pod-" pid ".port"))
+          _ (.addShutdownHook (Runtime/getRuntime)
+                              (Thread. (fn [] (.delete port-file))))
+          _ (spit port-file
+                  (str port "\n"))
           socket (.accept server)
           in (PushbackInputStream. (.getInputStream socket))
           out (.getOutputStream socket)

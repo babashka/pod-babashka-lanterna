@@ -2,11 +2,8 @@
 
 #?(:bb
    ;; test pod with JVM:
-   (load-pod ["lein" "trampoline" "run" "-m" "pod.babashka.lanterna"]
-             {:socket true
-              :inherit-io true})
-   ;; (load-pod ["./pod-babashka-lanterna"] {:socket true
-   ;;                                        :inherit-io true})
+   ;; (load-pod ["lein" "trampoline" "run" "-m" "pod.babashka.lanterna"] {:socket true})
+   (load-pod ["./pod-babashka-lanterna"] {:socket true})
    :clj nil
    )
 
