@@ -86,7 +86,7 @@
 (defmacro def-screen-fn
   ([f]
    `(defn ~(symbol (name f)) [m# & args#]
-      (let [t# (resolve-terminal m#)]
+      (let [t# (resolve-screen m#)]
         (let [v# (apply ~(symbol "screen" (str/replace (str f) #"^s-" "")) t# args#)]
           v#))))
   ([f ret]
@@ -198,6 +198,7 @@
                                   (throw (ex-info (str "Var not found: " var) {}))))
                               (catch Throwable e
                                 (debug e)
+                                (spit "/tmp/exception.log" (pr-str e))
                                 (let [reply {"ex-message" (or (ex-message e)
                                                               "")
                                              "ex-data" (pr-str
@@ -218,4 +219,4 @@
     (catch Throwable e
       (binding [*out* *err*]
         (prn e)
-        #_(spit "/tmp/exception.log" e)))))
+        (spit "/tmp/exception.log" e)))))
