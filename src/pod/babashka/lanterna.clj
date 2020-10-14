@@ -1,10 +1,13 @@
 (ns pod.babashka.lanterna
-  {:clj-kondo/config '{:lint-as {pod.babashka.lanterna/def-terminal-fn clojure.core/def}}}
+  {:clj-kondo/config '{:lint-as {pod.babashka.lanterna/def-terminal-fn clojure.core/def
+                                 pod.babashka.lanterna/def-screen-fn clojure.core/def}}}
   (:refer-clojure :exclude [read read-string flush])
   (:require [bencode.core :as bencode]
             [clojure.edn :as edn]
             [clojure.java.io :as io]
+            [clojure.string :as str]
             [clojure.walk :as walk]
+            [lanterna.screen :as screen]
             [lanterna.terminal :as terminal])
   (:import [java.io PushbackInputStream]
            [java.net ServerSocket])
@@ -36,42 +39,85 @@
 (defn resolve-terminal [m]
   (get @terminals (::terminal m)))
 
-(defn get-terminal []
-  (let [t (terminal/get-terminal)
-        id (str (java.util.UUID/randomUUID))]
-    (swap! terminals assoc id t)
-    {::terminal id}))
+(defn get-terminal
+  ([] (get-terminal :auto))
+  ([kind] (get-terminal kind {}))
+  ([kind opts]
+   (let [t (terminal/get-terminal kind opts)
+         id (str (java.util.UUID/randomUUID))]
+     (swap! terminals assoc id t)
+     {::terminal id})))
 
 (defmacro def-terminal-fn
   ([f]
    `(defn ~(symbol (name f)) [m# & args#]
       (let [t# (resolve-terminal m#)]
-        (let [v# (apply ~(symbol "terminal" (str f)) t# args#)]
+        (let [v# (apply ~(symbol "terminal" (str/replace (str f) #"^t-" ""))
+                        t# args#)]
           v#))))
   ([f ret]
    `(defn ~(symbol (name f)) [m# & args#]
       (let [t# (resolve-terminal m#)]
-        (apply ~(symbol "terminal" (str f)) t# args#)
+        (apply ~(symbol "terminal" (str/replace (str f) #"^t-" ""))
+               t# args#)
         ~ret))))
 
-(def-terminal-fn start nil)
-(def-terminal-fn stop nil)
-(def-terminal-fn put-string nil)
-(def-terminal-fn flush nil)
-(def-terminal-fn get-key)
-(def-terminal-fn get-key-blocking)
-(def-terminal-fn get-size)
+(def-terminal-fn t-start nil)
+(def-terminal-fn t-stop nil)
+(def-terminal-fn t-put-string nil)
+(def-terminal-fn t-flush nil)
+(def-terminal-fn t-get-key)
+(def-terminal-fn t-get-key-blocking)
+(def-terminal-fn t-get-size)
+
+(def screens (atom {}))
+
+(defn resolve-screen [m]
+  (get @screens (::screen m)))
+
+(defn terminal-screen
+  [m]
+  (let [t (resolve-terminal m)
+        s (screen/terminal-screen t)
+        id (str (java.util.UUID/randomUUID))]
+    (swap! screens assoc id s)
+    {::screen id}))
+
+(defmacro def-screen-fn
+  ([f]
+   `(defn ~(symbol (name f)) [m# & args#]
+      (let [t# (resolve-terminal m#)]
+        (let [v# (apply ~(symbol "screen" (str/replace (str f) #"^s-" "")) t# args#)]
+          v#))))
+  ([f ret]
+   `(defn ~(symbol (name f)) [m# & args#]
+      (let [t# (resolve-screen m#)]
+        (apply ~(symbol "screen" (str/replace (str f) #"^s-" "")) t# args#)
+        ~ret))))
+
+(def-screen-fn s-put-string nil)
+(def-screen-fn s-redraw nil)
+(def-screen-fn s-get-key)
+(def-screen-fn s-get-key-blocking)
+(def-screen-fn s-start nil)
 
 (def lookup*
   {'pod.babashka.lanterna.terminal
    {'get-terminal     get-terminal
-    'start            start
-    'stop             stop
-    'put-string       put-string
-    'flush            flush
-    'get-key          get-key
-    'get-key-blocking get-key-blocking
-    'get-size         get-size}})
+    'start            t-start
+    'stop             t-stop
+    'put-string       t-put-string
+    'flush            t-flush
+    'get-key          t-get-key
+    'get-key-blocking t-get-key-blocking
+    'get-size         t-get-size}
+   'pod.babashka.lanterna.screen
+   {'terminal-screen terminal-screen
+    'put-string       s-put-string
+    'redraw           s-redraw
+    'get-key          s-get-key
+    'get-key-blocking s-get-key-blocking
+    'start            s-start}})
 
 (defn lookup [var]
   (let [var-ns (symbol (namespace var))
@@ -87,7 +133,11 @@
      :namespaces [{:name pod.babashka.lanterna.terminal
                    :vars ~(mapv (fn [[k _]]
                                   {:name k})
-                              (get lookup* 'pod.babashka.lanterna.terminal))}]
+                                (get lookup* 'pod.babashka.lanterna.terminal))}
+                  {:name pod.babashka.lanterna.screen
+                   :vars ~(mapv (fn [[k _]]
+                                  {:name k})
+                                (get lookup* 'pod.babashka.lanterna.screen))}]
      :opts {:shutdown {}}}))
 
 (debug describe-map)
@@ -148,7 +198,8 @@
                                   (throw (ex-info (str "Var not found: " var) {}))))
                               (catch Throwable e
                                 (debug e)
-                                (let [reply {"ex-message" (ex-message e)
+                                (let [reply {"ex-message" (or (ex-message e)
+                                                              "")
                                              "ex-data" (pr-str
                                                         (assoc (ex-data e)
                                                                :type (class e)))
