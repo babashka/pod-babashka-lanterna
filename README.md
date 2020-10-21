@@ -2,7 +2,7 @@
 
 A pod exposing [clojure-lanterna](https://github.com/babashka/clojure-lanterna).
 
-To build see pod see [dev](#dev). Pre-compiled binaries are available in the CircleCI builds.
+To build, see [dev](#dev). Pre-compiled binaries are available in the CircleCI builds.
 
 ## API
 
