@@ -11,7 +11,8 @@
   :resource-paths ["resources"]
   :dependencies [[org.clojure/clojure "1.10.2-alpha2"]
                  [babashka/clojure-lanterna "0.9.8-SNAPSHOT"]
-                 [nrepl/bencode "1.1.0"]]
+                 [nrepl/bencode "1.1.0"]
+                 [borkdude/sci.impl.reflector "0.0.1-java11"]]
   :profiles {:uberjar {:global-vars {*assert* false}
                        :jvm-opts ["-Dclojure.compiler.direct-linking=true"
                                   "-Dclojure.spec.skip-macros=true"]
