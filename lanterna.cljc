@@ -2,8 +2,8 @@
 
 #?(:bb
    ;; test pod with JVM:
-   (load-pod ["lein" "trampoline" "run" "-m" "pod.babashka.lanterna"] {:transport :socket})
-   #_(load-pod ["./pod-babashka-lanterna"] {:transport :socket})
+   ;;(load-pod ["lein" "trampoline" "run" "-m" "pod.babashka.lanterna"] {:transport :socket})
+   (load-pod ["./pod-babashka-lanterna"] {:transport :socket})
    :clj nil
    )
 

@@ -1,14 +1,16 @@
 # pod-babashka-lanterna
 
-WIP. Babashka pods need to implement sockets in addition to stdin/stdout, since clojure-lanterna writes to stdout as well.
-See https://github.com/babashka/babashka.pods/issues/2.
+A pod exposing [clojure-lanterna](https://github.com/babashka/clojure-lanterna).
 
-A stretch goal: get the `pod-babashka-lanterna` branch of [console-tetris]() working:
+Demo:
 
-``` clojure
-$ export BABASHKA_CLASSPATH=$(clojure -Spath -Sdeps '{:deps {borkdude/console-tetris {:git/url "https://github.com/borkdude/console-tetris" :deps/manifest :deps :sha "53016bfb85f839aa7e2465cc51c1cb749dc1c240"}}}')
-$ bb -m tetris.core
-```
+- Run `bb lanterna.cljc`.
+- Console-tetris [console-tetris](https://github.com/borkdude/console-tetris):
+
+  ``` clojure
+  $ export BABASHKA_CLASSPATH=$(clojure -Spath -Sdeps '{:deps {borkdude/console-tetris {:git/url "https://github.com/borkdude/console-tetris" :deps/manifest :deps :sha "f2b8388b160b0326d72a7f18785687175910504f"}}}')
+  $ bb -m tetris.core
+  ```
 
 ## Dev
 
@@ -18,7 +20,7 @@ Run `script/compile`
 
 ### Test
 
-Run `bb lanterna.clj`.
+Run `bb lanterna.cljc`.
 
 ## License
 
