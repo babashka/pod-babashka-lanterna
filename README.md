@@ -2,6 +2,8 @@
 
 A pod exposing [clojure-lanterna](https://github.com/babashka/clojure-lanterna).
 
+To build see pod see [dev](#dev). Pre-compiled binaries are available in the CircleCI builds.
+
 ## API
 
 The following namespaces + vars are exposed:
@@ -41,6 +43,8 @@ More can be added, PRs welcome.
 ## Dev
 
 ### Build
+
+Set `GRAALVM_HOME` to your GraalVM 20.2.0-java11 directory.
 
 Run `script/compile`
 
