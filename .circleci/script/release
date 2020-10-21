@@ -10,8 +10,8 @@ cd /tmp/release
 
 ## release binary as zip archive
 
-zip "pod-babashka-$lanterna-$VERSION-$BABASHKA_PLATFORM-amd64.zip" "pod-babashka-$lanterna"
+zip "pod-babashka-lanterna-$VERSION-$BABASHKA_PLATFORM-amd64.zip" "pod-babashka-lanterna"
 
 ## cleanup
 
-rm "pod-babashka-$lanterna"
+rm "pod-babashka-lanterna"
