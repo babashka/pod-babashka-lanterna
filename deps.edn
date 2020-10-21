@@ -8,8 +8,8 @@
    {test-runner
     {:git/url "https://github.com/cognitect-labs/test-runner"
      :sha "cb96e80f6f3d3b307c59cbeb49bb0dcb3a2a780b"}
-    babashka.pods
-    {:local/root "/Users/borkdude/Dropbox/dev/clojure/babashka/babashka.pods"}
+    babashka/pods
+    {:local/root "/Users/borkdude/Dropbox/dev/clojure/babashka/pods"}
     #_{:git/url "https://github.com/babashka/babashka.pods"
      :sha "8f16139ab6e73a91aeb5fe97b398b30670e3fc9b"}}
    :extra-paths ["test"]

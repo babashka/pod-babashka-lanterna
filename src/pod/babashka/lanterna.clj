@@ -138,7 +138,7 @@
                    :vars ~(mapv (fn [[k _]]
                                   {:name k})
                                 (get lookup* 'pod.babashka.lanterna.screen))}]
-     :opts {:shutdown {}}}))
+     :ops {:shutdown {}}}))
 
 (debug describe-map)
 
@@ -156,7 +156,8 @@
           pid (.pid (java.lang.ProcessHandle/current))
           port-file (io/file (str ".babashka-pod-" pid ".port"))
           _ (.addShutdownHook (Runtime/getRuntime)
-                              (Thread. (fn [] (.delete port-file))))
+                              (Thread. (fn []
+                                         (.delete port-file))))
           _ (spit port-file
                   (str port "\n"))
           socket (.accept server)
@@ -166,7 +167,7 @@
                         (catch java.io.EOFException _
                           ::EOF))
           _ (write out (assoc describe-map
-                              "port" 1888))]
+                              "port" port))]
       (loop []
         (let [message (try (read in)
                            (catch java.io.EOFException _
