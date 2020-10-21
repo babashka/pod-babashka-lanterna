@@ -6,7 +6,7 @@ See https://github.com/babashka/babashka.pods/issues/2.
 A stretch goal: get the `pod-babashka-lanterna` branch of [console-tetris]() working:
 
 ``` clojure
-$ export BABASHKA_CLASSPATH=$(clojure -Spath -Sdeps '{:deps {borkdude/console-tetris {:local/root "/tmp/console-tetris" :deps/manifest :deps}}}')
+$ export BABASHKA_CLASSPATH=$(clojure -Spath -Sdeps '{:deps {borkdude/console-tetris {:git/url "https://github.com/borkdude/console-tetris" :deps/manifest :deps :sha "53016bfb85f839aa7e2465cc51c1cb749dc1c240"}}}')
 $ bb -m tetris.core
 ```
 
