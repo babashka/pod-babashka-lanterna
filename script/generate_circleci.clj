@@ -11,8 +11,8 @@
                                          :BABASHKA_PLATFORM "linux"
                                          :BABASHKA_TEST_ENV "native"
                                          :BABASHKA_XMX "-J-Xmx7g"
-                                         :POD_TEST_ENV "native"
-                                         :resource_class "large")
+                                         :POD_TEST_ENV "native")
+               :resource_class "large"
                :steps ["checkout"
                        {:run {:name "Pull Submodules",
                               :command "git submodule init\ngit submodule update\n"}}
@@ -87,16 +87,12 @@ fi"}}
   (ordered-map
    :version 2.1,
    :jobs (ordered-map
-          :hsqldb-linux (assoc-in linux [:environment :POD_DB_TYPE] "hsqldb")
-          :hsqldb-mac  (assoc-in mac [:environment :POD_DB_TYPE] "hsqldb")
-          :postgresql-linux (assoc-in linux [:environment :POD_DB_TYPE] "postgresql")
-          :postgresql-mac  (assoc-in mac [:environment :POD_DB_TYPE] "postgresql")),
+          :linux linux
+          :mac mac)
    :workflows (ordered-map
                :version 2
-               :ci {:jobs ["hsqldb-linux"
-                           "hsqldb-mac"
-                           "postgresql-linux"
-                           "postgresql-mac"]})))
+               :ci {:jobs ["linux"
+                           "mac"]})))
 
 (require '[clj-yaml.core :as yaml])
 (spit ".circleci/config.yml"
