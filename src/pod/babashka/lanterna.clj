@@ -100,6 +100,8 @@
 (def-screen-fn s-get-key)
 (def-screen-fn s-get-key-blocking)
 (def-screen-fn s-start nil)
+(def-screen-fn s-stop nil)
+(def-screen-fn s-get-size)
 
 (def lookup*
   {'pod.babashka.lanterna.terminal
@@ -117,7 +119,9 @@
     'redraw           s-redraw
     'get-key          s-get-key
     'get-key-blocking s-get-key-blocking
-    'start            s-start}})
+    'start            s-start
+    'stop             s-stop
+    'get-size         s-get-size}})
 
 (defn lookup [var]
   (let [var-ns (symbol (namespace var))
