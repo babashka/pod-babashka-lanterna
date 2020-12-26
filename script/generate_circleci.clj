@@ -47,7 +47,7 @@ fi"}}
                                           :destination "release"}}]))
 
 (def mac
-  (ordered-map :macos {:xcode "9.0"},
+  (ordered-map :macos {:xcode "12.0.0"},
                :environment (ordered-map :GRAALVM_HOME "/Users/distiller/graalvm-ce-java11-20.2.0/Contents/Home",
                                          :BABASHKA_PLATFORM "macos",
                                          :BABASHKA_TEST_ENV "native",
