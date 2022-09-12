@@ -164,7 +164,8 @@
                                          (.delete port-file))))
           _ (spit port-file
                   (str port "\n"))
-          socket (.accept server)
+          socket (doto (.accept server)
+                   (.setTcpNoDelay true))
           in (PushbackInputStream. (.getInputStream socket))
           out (.getOutputStream socket)
           _message (try (read in)
