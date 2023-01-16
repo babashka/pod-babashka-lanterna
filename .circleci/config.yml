@@ -56,8 +56,8 @@ jobs:
         command: |
           .circleci/script/release
     - save_cache:
-        key: linux-{{ checksum "project.clj" }}-{{ checksum ".circleci/config.yml" }}
         paths: [~/.m2, ~/graalvm-ce-java11-20.2.0]
+        key: linux-{{ checksum "project.clj" }}-{{ checksum ".circleci/config.yml" }}
     - store_artifacts: {path: /tmp/release, destination: release}
   mac:
     macos: {xcode: 14.0.0}
@@ -105,8 +105,8 @@ jobs:
         command: |
           .circleci/script/release
     - save_cache:
-        key: mac-{{ checksum "project.clj" }}-{{ checksum ".circleci/config.yml" }}
         paths: [~/.m2, ~/graalvm-ce-java11-20.2.0]
+        key: mac-{{ checksum "project.clj" }}-{{ checksum ".circleci/config.yml" }}
     - store_artifacts: {path: /tmp/release, destination: release}
 workflows:
   version: 2
