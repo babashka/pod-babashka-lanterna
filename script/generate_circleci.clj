@@ -10,6 +10,8 @@
                                          :GRAALVM_HOME "/home/circleci/graalvm-ce-java11-22.3.1"
                                          :BABASHKA_PLATFORM "linux"
                                          :BABASHKA_TEST_ENV "native"
+                                         :BABASHKA_STATIC "true"
+                                         :BABASHKA_MUSL "true"
                                          :BABASHKA_XMX "-J-Xmx7g"
                                          :POD_TEST_ENV "native")
                :resource_class "large"
@@ -26,6 +28,8 @@ sudo ./linux-install-1.11.1.1224.sh"}}
                               :command "sudo apt-get install lsof\n"}}
                        {:run {:name "Install native dev tools",
                               :command "sudo apt-get update\nsudo apt-get -y install gcc g++ zlib1g-dev\n"}}
+                       {:run {:name "Install musl",
+                              :command "sudo script/setup-musl"}}
                        {:run {:name "Download GraalVM",
                               :command "
 cd ~
