@@ -9,8 +9,8 @@
             :url "http://opensource.org/licenses/eclipse-1.0.php"}
   :source-paths ["src"]
   :resource-paths ["resources"]
-  :dependencies [[org.clojure/clojure "1.10.2-alpha2"]
-                 [babashka/clojure-lanterna "0.9.8-SNAPSHOT"]
+  :dependencies [[org.clojure/clojure "1.11.1"]
+                 [babashka/clojure-lanterna "0.9.8"]
                  [nrepl/bencode "1.1.0"]
                  [borkdude/sci.impl.reflector "0.0.1-java11"]]
   :profiles {:uberjar {:global-vars {*assert* false}
