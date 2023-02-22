@@ -10,8 +10,8 @@
                                          :GRAALVM_HOME "/home/circleci/graalvm-ce-java11-22.3.1"
                                          :BABASHKA_PLATFORM "linux"
                                          :BABASHKA_TEST_ENV "native"
-                                         :BABASHKA_STATIC "true"
-                                         :BABASHKA_MUSL "true"
+                                         :BABASHKA_STATIC true
+                                         :BABASHKA_MUSL true
                                          :BABASHKA_XMX "-J-Xmx7g"
                                          :POD_TEST_ENV "native")
                :resource_class "large"
