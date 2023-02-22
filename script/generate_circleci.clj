@@ -29,7 +29,7 @@ sudo ./linux-install-1.11.1.1224.sh"}}
                        {:run {:name "Install native dev tools",
                               :command "sudo apt-get update\nsudo apt-get -y install gcc g++ zlib1g-dev\n"}}
                        {:run {:name "Install musl",
-                              :command "sudo script/setup-musl"}}
+                              :command "sudo -E script/setup-musl"}}
                        {:run {:name "Download GraalVM",
                               :command "
 cd ~
