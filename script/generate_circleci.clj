@@ -27,7 +27,7 @@ sudo ./linux-install-1.11.1.1224.sh"}}
                        {:run {:name "Install lsof",
                               :command "sudo apt-get install lsof\n"}}
                        {:run {:name "Install native dev tools",
-                              :command "sudo apt-get update\nsudo apt-get -y install gcc g++ zlib1g-dev\n"}}
+                              :command "sudo apt-get update\nsudo apt-get -y install gcc g++ zlib1g-dev make\n"}}
                        {:run {:name "Install musl",
                               :command "sudo -E script/setup-musl"}}
                        {:run {:name "Download GraalVM",

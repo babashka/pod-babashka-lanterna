@@ -31,7 +31,7 @@ jobs:
         name: Install native dev tools
         command: |
           sudo apt-get update
-          sudo apt-get -y install gcc g++ zlib1g-dev
+          sudo apt-get -y install gcc g++ zlib1g-dev make
     - run: {name: Install musl, command: sudo -E script/setup-musl}
     - run:
         name: Download GraalVM
