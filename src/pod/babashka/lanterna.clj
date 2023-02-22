@@ -224,5 +224,4 @@
                   (recur))))))))
     (catch Throwable e
       (binding [*out* *err*]
-        (prn e)
-        (spit "/tmp/exception.log" e)))))
+        (prn e)))))
